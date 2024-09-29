@@ -42,7 +42,7 @@ python3Packages.buildPythonPackage rec {
   postInstall = ''
     python3 ./install-unix-datafiles.py --prefix=$out
     mkdir -p $out/lib/python3.12/site-packages/jdNBTExplorer/data
-    cp .  /jdNBTExplorer/data/translators.json $out/lib/python3.12/site-packages/jdNBTExplorer/data/
+    cp ./jdNBTExplorer/data/translators.json $out/lib/python3.12/site-packages/jdNBTExplorer/data/
     wrapProgram $out/bin/jdNBTExplorer \
       --prefix QT_QPA_PLATFORM_PLUGIN_PATH : ${pkgs.qt6.qtbase}/lib/qt6/plugins/platforms
   '';
