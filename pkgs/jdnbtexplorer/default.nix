@@ -10,6 +10,7 @@
 , attrs
 , py
 , setuptools
+, ...
  }:
 
 buildPythonPackage rec {
