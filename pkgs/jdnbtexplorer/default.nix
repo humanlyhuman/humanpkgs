@@ -4,8 +4,7 @@
 , fetchFromGitHub
 , makeWrapper
 , stdenv
-, callPackage  # Add this to call packages
-}:
+, callPackage
 
 let
   nbt = callPackage ../nbt/default.nix {};
@@ -15,7 +14,6 @@ python3Packages.buildPythonPackage rec {
   pname = "jdNBTExplorer";
   version = "2.1";
 
-  # Fetching source from GitHub
   src = fetchFromGitHub {
     owner = "JakobDev";
     repo = pname;
@@ -23,33 +21,28 @@ python3Packages.buildPythonPackage rec {
     sha256 = "sha256-aBEYzrjVRbYJsaUlHVBJbucZNWk9rgTADstbQxucEz4=";
   };
 
-  # Dependencies for runtime and build
   propagatedBuildInputs = [
     python3Packages.pyqt6 
-    pkgs.qt6.qtbase  # Use Qt6 base for PyQt6
+    pkgs.qt6.qtbase 
     pkgs.gettext
     nbt
   ];
 
   nativeBuildInputs = [
-    pkgs.qt6.qttools  # Use Qt6 tools for pyuic6
+    pkgs.qt6.qttools  
     makeWrapper
    ];
 
-  # Ensure pyuic6 is available in PATH
   preBuild = ''
-    mkdir -p dist  # Create dist directory to prevent "No such file or directory" errors
     export PATH=${python3Packages.pyqt6}/bin:$PATH
     export PATH=${python3Packages.nbtlib}/bin:$PATH
   '';
   format = "pyproject";
 
-  # Post-install phase to set up application
   postInstall = ''
-    # Install desktop entries and icons
     python3 ./install-unix-datafiles.py --prefix=$out
-
-    # Wrapping the binary to ensure it finds Qt libraries
+    mkdir -p $out/lib/python3.12/site-packages/jdNBTExplorer/data
+    cp ./jdNBTExplorer/data/translators.json $out/lib/python3.12/site-packages/jdNBTExplorer/data/
     wrapProgram $out/bin/jdNBTExplorer \
       --prefix QT_QPA_PLATFORM_PLUGIN_PATH : ${pkgs.qt6.qtbase}/lib/qt6/plugins/platforms
   '';
