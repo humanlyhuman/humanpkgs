@@ -1,37 +1,23 @@
-{ lib
-, buildPythonPackage
-, fetchPypi
-, setuptools-scm
-, attrs
-, py
-, setuptools  
-, ...
- }:
+{ lib, python3Packages, kdePackages, pkgs, fetchFromGitHub, substituteAll }:
 
-buildPythonPackage rec {
-  pname = "jdnbtexplorer";
+python3Packages.buildPythonPackage rec {
+  pname = "jdNBTExplorer";
   version = "2.1";
-  pyproject = true;
+  format  = "pyproject";
+  src = fetchFromGitHub {
+    owner =  "JakobDev";
+    repo = pname;
+    rev = "${version}";
+    sha256 = "sha256-aBEYzrjVRbYJsaUlHVBJbucZNWk9rgTADstbQxucEz4=";
+    };
+  dontWrapQtApps = true;  
+  propagatedBuildInputs =     [ python3Packages.nbtlib python3Packages.pyqt6 python3Packages.pyside6  python3Packages.wheel pkgs.kdePackages.qttools ];
+  dependencies = [ kdePackages.qttools ];
+  doCheck = false;      
 
-  src = fetchPypi {
-    inherit pname version;
-    hash = "sha256-089d08250261e294572b4f7d46a0ba95dc4c55d1";
-  };
-
-  build-system = [
-    setuptools
-    setuptools-scm
-  ];
-
-  dependencies = [
-    attrs
-    py
-    setuptools
-  ];
-
-  meta = {
-    changelog = "https://codeberg.org/JakobDev/jdNBTExplorer/releases/tag/${version}";
+  meta = with lib; {
+    homepage = "https://github.com/JakobDev/jdNBTExplorer";
     description = "A Editor for Minecraft NBT files";
-    homepage = "https://codeberg.org/JakobDev/jdNBTExplorer/";
+    platforms = platforms.linux;
   };
-}
+}       
