@@ -1,15 +1,10 @@
 { lib
 , buildPythonPackage
 , fetchPypi
-
-# build-system
-, setuptools
 , setuptools-scm
-
-# dependencies
 , attrs
 , py
-, setuptools
+, setuptools  
 , ...
  }:
 
@@ -22,7 +17,6 @@ buildPythonPackage rec {
     inherit pname version;
     hash = "sha256-089d08250261e294572b4f7d46a0ba95dc4c55d1";
   };
-
 
   build-system = [
     setuptools
