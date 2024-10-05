@@ -9,7 +9,6 @@
         overlays = [ inputs.self.overlays.default ];
         config = { };
       };
-
       overlayAttrs = config.packages;
     };
 }

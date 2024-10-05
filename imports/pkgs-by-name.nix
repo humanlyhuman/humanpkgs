@@ -5,5 +5,5 @@
     { ... }:
     {
       pkgsDirectory = ../pkgs/by-name;
-    };
+    };  
 }

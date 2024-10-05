@@ -9,7 +9,7 @@
   };
 
   outputs =
-    inputs@{ flake-parts, systems, ... }:
+    inputs@{ flake-parts, systems, ... }:  
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = import systems;
 
