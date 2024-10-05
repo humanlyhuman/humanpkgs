@@ -37,8 +37,8 @@
 , ...
 }:
 stdenv.mkDerivation(finalAttrs: {
-  pname = "suyu";
-  version = "0.0.3";
+  pname = "torzu";
+  version = "master";
 
   src = fetchgit {
     url = " ";
@@ -103,33 +103,17 @@ stdenv.mkDerivation(finalAttrs: {
   dontFixCmake = true;
 
   cmakeFlags = [
-    # actually has a noticeable performance impact
     "-DYUZU_ENABLE_LTO=ON"
-
-    # build with qt6
     "-DENABLE_QT6=ON"
     "-DENABLE_QT_TRANSLATION=ON"
-
-    # use system libraries
-    # NB: "external" here means "from the externals/ directory in the source",
-    # so "off" means "use system"
     "-DYUZU_USE_EXTERNAL_SDL2=OFF"
     "-DYUZU_USE_EXTERNAL_VULKAN_HEADERS=OFF"
-
-    # # don't use system ffmpeg, suyu uses internal APIs
-    # "-DYUZU_USE_BUNDLED_FFMPEG=ON"
-
-    # don't check for missing submodules
     "-DYUZU_CHECK_SUBMODULES=OFF"
-
-    # enable some optional features
     "-DYUZU_USE_QT_WEB_ENGINE=ON"
     "-DYUZU_USE_QT_MULTIMEDIA=ON"
     "-DUSE_DISCORD_PRESENCE=ON"
-
-    # We dont want to bother upstream with potentially outdated compat reports
     "-DYUZU_ENABLE_COMPATIBILITY_REPORTING=OFF"
-    "-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF" # We provide this deterministically
+    "-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF" 
   ];
 
   # Does some handrolled SIMD
@@ -159,7 +143,7 @@ stdenv.mkDerivation(finalAttrs: {
 
 
   postInstall = "
-    install -Dm444 $src/dist/72-suyu-input.rules $out/lib/udev/rules.d/72-suyu-input.rules
+    install -Dm444 $src/dist/72-yuzu-input.rules $out/lib/udev/rules.d/72-yuzu-input.rules
   ";
 
   passthru.updateScript = nix-update-script {
@@ -175,7 +159,7 @@ stdenv.mkDerivation(finalAttrs: {
       Using the master/ branch is recommended for general usage.
       Using the dev branch is recommended if you would like to try out experimental features, with a cost of stability.
     '';
-    mainProgram = "suyu";
+    mainProgram = "torzu";
     platforms = [ "aarch64-linux" "x86_64-linux" ];
     license = with licenses; [
       gpl3Plus
