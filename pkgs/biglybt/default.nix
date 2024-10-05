@@ -16,7 +16,6 @@ stdenv.mkDerivation {
     jre
     swt
     gtk3
-    maven
   ];
 
   src = fetchzip {
