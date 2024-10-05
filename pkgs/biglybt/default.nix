@@ -23,9 +23,9 @@ stdenv.mkDerivation {
     sha256 = "sha256-pjoaDO0cnhVMK1EckrWna6gB5du5ZxgySvxKrbB2N4o=";
   };
   buildPhase = ''
-    '';
+    '';         
   installPhase = ''
     mkdir -p $out/bin
-    cp -r $src/* $out/bin 
+    cp -r ./* $out/bin 
   '';
 }
