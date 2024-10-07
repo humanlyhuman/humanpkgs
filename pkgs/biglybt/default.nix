@@ -30,16 +30,19 @@ stdenv.mkDerivation {
 
     runHook postConfigure
   '';
+  
   passthru.updateScript = nix-update-script {
     extraArgs = [
       "--version-regex"
       "^(v[0-9.]+)$"
     ];
   };
+
   src = fetchzip {
     url = "https://github.com/BiglySoftware/BiglyBT/releases/download/v3.7.0.0/GitHub_BiglyBT_unix.tar.gz";
     sha256 = "sha256-pjoaDO0cnhVMK1EckrWna6gB5du5ZxgySvxKrbB2N4o=";
   };
+
   installPhase   = ''
     runHook preInstall
     install -d $out/{share/{biglybt,applications,icons/hicolor/scalable/apps},bin}

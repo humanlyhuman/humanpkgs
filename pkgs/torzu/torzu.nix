@@ -34,7 +34,8 @@
 , yasm
 , zlib
 , zstd
-, ...
+, python3
+, fetchFromGitHub, ...
 }:
 stdenv.mkDerivation(finalAttrs: {
   pname = "torzu";
@@ -61,42 +62,28 @@ stdenv.mkDerivation(finalAttrs: {
     # vulkan-headers must come first, so the older propagated versions
     # don't get picked up by accident
     vulkan-headers
-
     boost
     catch2_3
     cpp-jwt
     cubeb
     discord-rpc
-    # intentionally omitted: dynarmic - prefer vendored version for compatibility
     enet
-
-    # ffmpeg deps (also includes vendored)
-    # we do not use internal ffmpeg because cuda errors
     autoconf
     yasm
     libva  # for accelerated video decode on non-nvidia
     nv-codec-headers-12  # for accelerated video decode on nvidia
     ffmpeg-headless
-    # end ffmpeg deps
-
+    python3
     fmt
-    # intentionally omitted: gamemode - loaded dynamically at runtime
-    # intentionally omitted: httplib - upstream requires an older version than what we have
     libopus
     libusb1
-    # intentionally omitted: LLVM - heavy, only used for stack traces in the debugger
     lz4
     nlohmann_json
     qtbase
     qtmultimedia
     qtwayland
     qtwebengine
-    # intentionally omitted: renderdoc - heavy, developer only
     SDL2
-    # not packaged in nixpkgs: simpleini
-    # intentionally omitted: stb - header only libraries, vendor uses git snapshot
-    # not packaged in nixpkgs: vulkan-memory-allocator
-    # intentionally omitted: xbyak - prefer vendored version for compatibility
     zlib
     zstd
   ];
