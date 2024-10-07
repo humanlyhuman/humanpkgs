@@ -130,8 +130,8 @@ stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    homepage = "https://studio-link.com";
-    description = "Voip transfer";
+    homepage = "https://sudachi.emuplace.app/";
+    description = "Sudachi";
     platforms = platforms.linux;
   };
 }
