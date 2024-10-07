@@ -1,6 +1,6 @@
 { lib
 , stdenv
-, fetchgit
+, fetchFromGitea
 , nix-update-script
 , wrapQtAppsHook
 , autoconf
@@ -40,11 +40,14 @@ stdenv.mkDerivation(finalAttrs: {
   pname = "torzu";
   version = "master";
 
-  src = fetchgit {
-    url = " ";
-    rev = "v${finalAttrs.version}";
-    sha256 = "wLUPNRDR22m34OcUSB1xHd+pT7/wx0pHYAZj6LnEN4g=";
-  };
+  src = fetchFromGitea {
+    domain = "notabug.org";
+    owner = "litucks";
+    repo = "torzu";
+    rev = "15470284cf710f9d9ab926283c9ecc91714ba01b";
+    hash = "sha256-s3zpeb4BGHz30ZlV97WsLI/CY4rQPdnaBy4tGBnqHxo=";
+    fetchSubmodules = true;
+};
 
   nativeBuildInputs = [
     cmake
@@ -122,7 +125,7 @@ stdenv.mkDerivation(finalAttrs: {
   # Fixes vulkan detection.
   # FIXME: patchelf --add-rpath corrupts the binary for some reason, investigate
   qtWrapperArgs = [
-    "--prefix LD_LIBRARY_PATH : ${vulkan-loader}/lib"
+    "--prefix LD_LIBRARY_PATH:${vulkan-loader}/lib"
   ];
 
   preConfigure = ''
@@ -151,8 +154,8 @@ stdenv.mkDerivation(finalAttrs: {
   };
 
   meta = with lib; {
-    homepage = "https://suyu.dev";
-    changelog = "https://suyu.dev/blog";
+    homepage = "https://notabug.org/litucks/torzu";
+    changelog = "https://notabug.org/litucks/torzu";
     description = "An experimental Nintendo Switch emulator written in C++";
     longDescription = ''
       An experimental Nintendo Switch emulator written in C++.
