@@ -35,7 +35,7 @@
 , zlib
 , zstd
 , python3
-, fetchFromGitHub, ...
+, fetchFromGitHub, pkgs, ...
 }:
 stdenv.mkDerivation(finalAttrs: {
   pname = "torzu";
@@ -49,6 +49,7 @@ stdenv.mkDerivation(finalAttrs: {
     hash = "sha256-s3zpeb4BGHz30ZlV97WsLI/CY4rQPdnaBy4tGBnqHxo=";
     fetchSubmodules = true;
 };
+    configureFlags = [ "--enable-debug" "-DVULKINCLUDE_INSTALL_VKSDK=ON"     ]; 
 
   nativeBuildInputs = [
     cmake
@@ -61,13 +62,13 @@ stdenv.mkDerivation(finalAttrs: {
   buildInputs = [
     # vulkan-headers must come first, so the older propagated versions
     # don't get picked up by accident
+    pkgs.vulkan-utility-libraries 
     vulkan-headers
     boost
     catch2_3
     cpp-jwt
     cubeb
     discord-rpc
-    enet
     autoconf
     yasm
     libva  # for accelerated video decode on non-nvidia
@@ -91,7 +92,7 @@ stdenv.mkDerivation(finalAttrs: {
   # This changes `ir/opt` to `ir/var/empty` in `externals/dynarmic/src/dynarmic/CMakeLists.txt`
   # making the build fail, as that path does not exist
   dontFixCmake = true;
-
+  makeFlags = [ "-j4" ];
   cmakeFlags = [
     "-DYUZU_ENABLE_LTO=ON"
     "-DENABLE_QT6=ON"
@@ -103,7 +104,9 @@ stdenv.mkDerivation(finalAttrs: {
     "-DYUZU_USE_QT_MULTIMEDIA=ON"
     "-DUSE_DISCORD_PRESENCE=ON"
     "-DYUZU_ENABLE_COMPATIBILITY_REPORTING=OFF"
-    "-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF" 
+    "-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=OFF"
+    "-DVK_DRIVER_ID_MESA_AGXV=1"
+    "-DCMAKE_BUILD_TYPE=Debug" 
   ];
 
   # Does some handrolled SIMD
